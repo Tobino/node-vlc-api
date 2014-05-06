@@ -12,6 +12,9 @@
     "request": "~2.34.0"
   },
   "scripts": {
-    "test": "node ./test/thisistheremix.js"
+    "test": "node ./test/index.js"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2"
   }
 }
