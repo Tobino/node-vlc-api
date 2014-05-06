@@ -4,6 +4,9 @@ HTTP API client for node.js
 
 (Yes, vlc has an http api)
 
+[![Build Status](https://travis-ci.org/Tobino/node-vlc-api.svg?branch=master)](https://travis-ci.org/Tobino/node-vlc-api)
+[![Dependency Status](https://gemnasium.com/Tobino/node-vlc-api.svg)](https://gemnasium.com/Tobino/node-vlc-api)
+
 ## Install:
 
     npm install vlc-api
@@ -67,9 +70,7 @@ undefined
 
 ## Tests:
 
-1. Turn on vlc with the http interface enabled and listening on 8080.
-3. Get a playlist going.
-3. Run `npm test` for a CRAZY ROBOT REMIX
+1. Run `npm test`
 
 ## License:
 
