@@ -12,9 +12,10 @@
     "request": "~2.34.0"
   },
   "scripts": {
-    "test": "node ./test/index.js"
+    "test": "mocha"
   },
   "devDependencies": {
-    "mocha": "^1.18.2"
+    "mocha": "^1.18.2",
+    "nock": "^0.29.0"
   }
 }
