@@ -8,10 +8,6 @@ test-cov:
 
 test-coveralls:
 	$(MAKE) test REPORTER=spec
-	$(MAKE) test REPORTER=mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js --verbose
-	rm -rf lib-cov
-
-clean:
-	rm -rf ./lib/binding
+	$(MAKE) test REPORTER=mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
 
 .PHONY: test
