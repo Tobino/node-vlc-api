@@ -41,6 +41,18 @@ describe('vlc-api', function(){
       .reply(200);
     vlc.status.pause(done);
   })
+  it('should resume without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=pl_forceresume')
+      .reply(200);
+    vlc.status.pause(true,done);
+  })
+  it('should force pause without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=pl_forcepause')
+      .reply(200);
+    vlc.status.pause(false,done);
+  })
   it('should change to next without error', function(done){
     var scope = nock('http://vlc-api.test')
       .get('/requests/status.json?command=pl_next')
@@ -130,5 +142,59 @@ describe('vlc-api', function(){
       .get('/requests/status.json?command=volume&val=100')
       .reply(200);
     vlc.status.volume(100,done);
+  })
+  it('should seek without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=seek&val=10')
+      .reply(200);
+    vlc.status.seek(10,done);
+  })
+  it('should set gain on preamp (dB) without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=preamp&val=10')
+      .reply(200);
+    vlc.status.preamp(10,done);
+  })
+  it('should set the gain on a particular band (dB) without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=equalizer&band=2000&val=10')
+      .reply(200);
+    vlc.status.equalizer(2000,10,done);
+  })
+  it('should set equalizer presets without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=setpreset&val=')
+      .reply(200);
+    vlc.status.equalizer.preset(done);
+  })
+  it('should set title without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=title&val=title')
+      .reply(200);
+    vlc.status.title('title',done);
+  })
+  it('should set chapter without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=chapter&val=chapter')
+      .reply(200);
+    vlc.status.chapter('chapter',done);
+  })
+  it('should set audio track without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=audio_track&val=3')
+      .reply(200);
+    vlc.status.audioTrack(3,done);
+  })
+  it('should set video track without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=video_track&val=3')
+      .reply(200);
+    vlc.status.videoTrack(3,done);
+  })
+  it('should set subtitle track without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=subtitle_track&val=3')
+      .reply(200);
+    vlc.status.subtitleTrack(3,done);
   })
 })
