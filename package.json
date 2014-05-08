@@ -7,15 +7,24 @@
   "repository": {
     "url": "git@github.com:jesusabdullah/node-vlc-api.git"
   },
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "dependencies": {
     "request": "~2.34.0"
   },
   "scripts": {
     "test": "mocha"
   },
+  "config": {
+    "blanket": {
+      "pattern": "lib",
+      "data-cover-never": "node_modules"
+    }
+  },
   "devDependencies": {
     "mocha": "^1.18.2",
-    "nock": "^0.29.0"
+    "nock": "^0.29.0",
+    "coveralls": "^2.10.0",
+    "mocha-lcov-reporter": "0.0.1",
+    "blanket": "^1.1.6"
   }
 }

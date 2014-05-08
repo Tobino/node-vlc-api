@@ -1,5 +1,5 @@
 var nock = require('nock'),
-  vlc = require('../')();
+  vlc = require('../lib')();
 
 vlc._base = 'http://vlc-api.test';
 

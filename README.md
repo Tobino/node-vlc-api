@@ -6,6 +6,7 @@ HTTP API client for node.js
 
 [![Build Status](https://travis-ci.org/Tobino/node-vlc-api.svg?branch=master)](https://travis-ci.org/Tobino/node-vlc-api)
 [![Dependency Status](https://gemnasium.com/Tobino/node-vlc-api.svg)](https://gemnasium.com/Tobino/node-vlc-api)
+[![Coverage Status](https://coveralls.io/repos/Tobino/node-vlc-api/badge.png)](https://coveralls.io/r/Tobino/node-vlc-api)
 
 ## Install:
 
