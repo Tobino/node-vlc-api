@@ -1,6 +1,6 @@
 var nock = require('nock'),
-  chai = require("chai"),
-  vlc = require('../lib')();
+    chai = require('chai'),
+    vlc  = require('../lib')();
 
 var expect = chai.expect;
 var assert = chai.assert;
@@ -157,7 +157,7 @@ describe('vlc-api', function(){
           vlc.status.sort('track','wrong');
         }, 
         Error, 
-        "Order may be `forward` or `reverse`."
+        'Order may be `forward` or `reverse`.'
       );
     })
     it('should throws an error if wrong mode is given', function(){
@@ -165,7 +165,7 @@ describe('vlc-api', function(){
           vlc.status.sort('wrong','forward');
         }, 
         Error, 
-        "Modes are: `id`, `name`, `author`, `random`, `track`."
+        'Modes are: `id`, `name`, `author`, `random`, `track`.'
       );
     })
   })
@@ -249,7 +249,7 @@ describe('request client api', function(){
         vlc.request();
       }, 
       Error, 
-      "First argument to Client#request should be a resource."
+      'First argument to Client#request should be a resource.'
     );
   })
   it('should throws an error if Vlc is a teapot', function(){
@@ -258,7 +258,7 @@ describe('request client api', function(){
       .reply(418);
     vlc.request(3,function (err,res) {
       assert.equal(err,
-        "Error: HTTP status 418"
+        'Error: HTTP status 418'
       );
     });
   })
@@ -268,7 +268,7 @@ describe('request client api', function(){
     opts.input = 'http://youtu.be/YSgAc6ytFOs';
     vlc.request(opts,function (err,res) {
       assert.equal(err.code,
-        "ENOTFOUND"
+        'ENOTFOUND'
       );
     });
   })
