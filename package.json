@@ -25,6 +25,7 @@
     "nock": "^0.29.0",
     "coveralls": "^2.10.0",
     "mocha-lcov-reporter": "0.0.1",
-    "blanket": "^1.1.6"
+    "blanket": "^1.1.6",
+    "chai": "~1.9.1"
   }
 }

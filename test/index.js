@@ -1,10 +1,19 @@
 var nock = require('nock'),
+  chai = require("chai"),
   vlc = require('../lib')();
+
+var expect = chai.expect;
+var assert = chai.assert;
 
 vlc._base = 'http://vlc-api.test';
 
-var assert = require("assert");
 describe('vlc-api', function(){
+  it('should Get VLC status information, current item info and meta without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json')
+      .reply(200);
+    vlc.status(done);
+  })
   it('should enqueue song without error', function(done){
     var scope = nock('http://vlc-api.test')
       .get('/requests/status.json?command=in_enqueue&input=http%3A%2F%2Fyoutu.be%2FYSgAc6ytFOs')
@@ -23,17 +32,19 @@ describe('vlc-api', function(){
       .reply(200);
     vlc.status.play('http://youtu.be/YSgAc6ytFOs',done);
   })
-  it('should go to this song on the playlist without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=pl_play&id=1')
-      .reply(200);
-    vlc.status.goto(1,done);
-  })
-  it('should play last active item on the playlist without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=pl_play&id=')
-      .reply(200);
-    vlc.status.goto(done);
+  describe('Goto function', function(){
+    it('should go to this song on the playlist without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=pl_play&id=1')
+        .reply(200);
+      vlc.status.goto(1,done);
+    })
+    it('should play last active item on the playlist without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=pl_play&id=')
+        .reply(200);
+      vlc.status.goto(done);
+    })
   })
   it('should toggle pause without error', function(done){
     var scope = nock('http://vlc-api.test')
@@ -65,6 +76,12 @@ describe('vlc-api', function(){
       .reply(200);
     vlc.status.delete(1,done);
   })
+  it('should scrap the whole playlist, start over. without error', function(done){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/status.json?command=pl_empty')
+      .reply(200);
+    vlc.status.empty(done);
+  })
   it('should change to previous without error', function(done){
     var scope = nock('http://vlc-api.test')
       .get('/requests/status.json?command=pl_previous')
@@ -83,53 +100,73 @@ describe('vlc-api', function(){
       .reply(200);
     vlc.status.subtitleDelay(30,done);
   })
-  it('should change ratio without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=aspectratio&val=16%3A9')
-      .reply(200);
-    ratio ='16:9';
-    vlc.status.aspectRatio(ratio,done);
+  describe('Ratio function', function(){
+    it('should change ratio without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=aspectratio&val=16%3A9')
+        .reply(200);
+      ratio ='16:9';
+      vlc.status.aspectRatio(ratio,done);
+    })
+    it('should change ratio array without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=aspectratio&val=16%3A9')
+        .reply(200);
+      ratio =[16,9];
+      vlc.status.aspectRatio(ratio,done);
+    })
+    it('should change ratio width,height without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=aspectratio&val=16%3A9')
+        .reply(200);
+      ratio.width =16;
+      ratio.height =9;
+      vlc.status.aspectRatio(ratio,done);
+    })
+    it('should change ratio w,h without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=aspectratio&val=16%3A9')
+        .reply(200);
+      ratio.w =16;
+      ratio.h =9;
+      vlc.status.aspectRatio(ratio,done);
+    })
   })
-  it('should change ratio array without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=aspectratio&val=16%3A9')
-      .reply(200);
-    ratio =[16,9];
-    vlc.status.aspectRatio(ratio,done);
-  })
-  it('should change ratio width,height without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=aspectratio&val=16%3A9')
-      .reply(200);
-    ratio.width =16;
-    ratio.height =9;
-    vlc.status.aspectRatio(ratio,done);
-  })
-  it('should change ratio w,h without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=aspectratio&val=16%3A9')
-      .reply(200);
-    ratio.w =16;
-    ratio.h =9;
-    vlc.status.aspectRatio(ratio,done);
-  })
-  it('should sort by name without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=pl_sort&id=0&val=1')
-      .reply(200);
-    vlc.status.sort('name',done);
-  })
-  it('should sort by author forward without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=pl_sort&id=0&val=3')
-      .reply(200);
-    vlc.status.sort('author','forward',done);
-  })
-  it('should sort by track reverse without error', function(done){
-    var scope = nock('http://vlc-api.test')
-      .get('/requests/status.json?command=pl_sort&id=1&val=7')
-      .reply(200);
-    vlc.status.sort('track','reverse',done);
+  describe('Sort function', function(){
+    it('should sort by name without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=pl_sort&id=0&val=1')
+        .reply(200);
+      vlc.status.sort('name',done);
+    })
+    it('should sort by author forward without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=pl_sort&id=0&val=3')
+        .reply(200);
+      vlc.status.sort('author','forward',done);
+    })
+    it('should sort by track reverse without error', function(done){
+      var scope = nock('http://vlc-api.test')
+        .get('/requests/status.json?command=pl_sort&id=1&val=7')
+        .reply(200);
+      vlc.status.sort('track','reverse',done);
+    })
+    it('should throws an error if wrong order is given', function(){
+      assert.throw(function() {
+          vlc.status.sort('track','wrong');
+        }, 
+        Error, 
+        "Order may be `forward` or `reverse`."
+      );
+    })
+    it('should throws an error if wrong mode is given', function(){
+      assert.throw(function() {
+          vlc.status.sort('wrong','forward');
+        }, 
+        Error, 
+        "Modes are: `id`, `name`, `author`, `random`, `track`."
+      );
+    })
   })
   it('should turn on service discovery modules without error', function(done){
     var scope = nock('http://vlc-api.test')
@@ -196,5 +233,26 @@ describe('vlc-api', function(){
       .get('/requests/status.json?command=subtitle_track&val=3')
       .reply(200);
     vlc.status.subtitleTrack(3,done);
+  })
+})
+
+describe('request client api', function(){
+  it('should throws an error if no callback is given', function(){
+    assert.throw(function() {
+        vlc.request();
+      }, 
+      Error, 
+      "First argument to Client#request should be a resource."
+    );
+  })
+  it('should throws an error if Vlc is a teapot', function(){
+    var scope = nock('http://vlc-api.test')
+      .get('/requests/3.json')
+      .reply(418);
+    vlc.request(3,function (err,res) {
+      assert.equal(err,
+        "Error: HTTP status 418"
+      );
+    });
   })
 })
