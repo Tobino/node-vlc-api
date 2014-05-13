@@ -9,9 +9,14 @@
   },
   "main": "./index.js",
   "dependencies": {
-    "request": "~2.9.203"
+    "request": "~2.34.0"
   },
   "scripts": {
-    "test": "node ./test/thisistheremix.js"
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2",
+    "nock": "^0.29.0",
+    "chai": "~1.9.1"
   }
 }

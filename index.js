@@ -72,7 +72,7 @@ var Client = module.exports = function (opts) {
       opts = {};
     }
     opts.command = 'pl_play';
-    opts.input = id;
+    opts.id = id;
     return client.status(opts, cb);
   };
   // Set pause status. Null status means toggle.
@@ -81,9 +81,9 @@ var Client = module.exports = function (opts) {
       return client.status({command: 'pl_pause'}, status);
     }
     if (status) {
-      return client.status({command: 'pl_forceresume'}, status);      
+      return client.status({command: 'pl_forceresume'}, cb);      
     }
-    return client.status({command: 'pl_forcepause'}, status);      
+    return client.status({command: 'pl_forcepause'}, cb);      
   }
   // Stop playback.
   this.status.stop = this.request.bind(this, 'status', {command: 'pl_stop'});
@@ -161,17 +161,16 @@ var Client = module.exports = function (opts) {
           break;
         default:
           // No match means this is an error. Callback and return.
-          err = new Error('Order may be `forward` or `backward`.');
+          err = new Error('Order may be `forward` or `reverse`.');
       }
     }
 
     if (typeof mode == 'string') {
-      mode = ['id', 'name', null, 'author', null, 'random', null, 'track']
-        .indexOf(mode.toLowerCase())
-      ;
+      var modes = ['id', 'name', null, 'author', null, 'random', null, 'track'];
+      mode =  modes.indexOf(mode.toLowerCase());
       if (mode == -1) {
         // No specified mode! Error time.
-        err = err || cb(new Error('Modes are: `' + mode.join('`, `') + '`.'));
+        err = err || new Error('Modes are: `' + modes.join('`, `') + '`.');
       }
     }
 
@@ -231,7 +230,7 @@ var Client = module.exports = function (opts) {
   // Set gain on preamp (dB)
   this.status.preamp = function (k, cb) {
     return client.status({
-      command: 'volume',
+      command: 'preamp',
       val: k
     }, cb);
   };
@@ -336,6 +335,8 @@ Client.prototype.request = function (resource, opts, cb) {
     qs: opts || {}
   }, function (err, res, body) {
     var json;
+
+    if (cb && err) return cb(err);
 
     // Documentation does not say which status codes to expect.
     // I'm filtering out 300-500 range codes here
